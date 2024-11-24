@@ -46,13 +46,18 @@
     pkgs.typst
 
     # C
+    pkgs.gcc
     pkgs.cmake
+    pkgs.ninja
 
     # PHP
     pkgs.php82Packages.composer
 
     # Python
     pkgs.uv
+
+    # Libs
+    pkgs.nasm
 
     # Gnome
     #pkgs.dconf
@@ -127,7 +132,7 @@
     # Configuration écrite dans ~/.config/starship.toml
     settings = {
       format = ''
-╭─ $username$hostname$directory$git_branch$git_commit$git_state$docker_context$package$php$python$rust$memory_usage$env_var$custom$sudo$cmd_duration$jobs$time$status$os$container
+╭─ $username$hostname$directory$git_branch$git_commit$git_state$docker_context$package$c$cmake$lua$nodejs$php$python$rust$typst$zig$nix_shell$memory_usage$env_var$custom$sudo$cmd_duration$jobs$time$status$os$container
 ╰─\$ '';
 
       add_newline = true;
