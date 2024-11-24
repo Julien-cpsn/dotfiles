@@ -137,6 +137,9 @@
 
       add_newline = true;
 
+      scan_timeout = 10;
+      command_timeout = 100;
+
       # character = {
       #   success_symbol = "[➜](bold green)";
       #   error_symbol = "[➜](bold red)";
