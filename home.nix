@@ -19,8 +19,12 @@
   # environment.
   home.packages = [
     # Applications
+    #pkgs.flatpak
+    #pkgs.appimage-run
+    #pkgs.appimageTools
     #pkgs.google-chrome
     #pkgs.spotify
+    #pkgs.jetbrains-toolbox
 
     # Virtualization
     pkgs.docker
@@ -40,6 +44,7 @@
     pkgs.php
     pkgs.python3
     pkgs.nodejs_22
+    pkgs.jdk
     pkgs.zig
     pkgs.c3c
     pkgs.gleam
@@ -58,6 +63,9 @@
 
     # Libs
     pkgs.nasm
+    pkgs.libsecret
+    pkgs.fuse
+    pkgs.fuse3
 
     # Gnome
     #pkgs.dconf
@@ -101,7 +109,7 @@
     # EDITOR = "emacs";
   };
 
-  # Let Home Manager install and manage itself.
+  #Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 
   programs.zsh = {
@@ -120,11 +128,19 @@
       ls = "ls --color=auto";
       fls = "ls -lhrtaX --group-directories-first";
     };
+
+    initExtra = ''
+      bindkey "^[[1;5C" forward-word
+      bindkey "^[[1;5D" backward-word
+      bindkey "^[[3~" delete-char
+      bindkey  "^[[H" beginning-of-line
+      bindkey  "^[[F"   end-of-line
+    '';
+
     history = {
       size = 10000;
       path = "${config.xdg.dataHome}/zsh/history";
     };
-
   };
 
   programs.starship = {
