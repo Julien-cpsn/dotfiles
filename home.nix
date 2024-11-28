@@ -19,8 +19,8 @@
   # environment.
   home.packages = [
     # Applications
-    pkgs.google-chrome
-    pkgs.spotify
+    #pkgs.google-chrome
+    #pkgs.spotify
 
     # Virtualization
     pkgs.docker
