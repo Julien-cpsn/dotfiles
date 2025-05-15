@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 
+let
+  unstable = import <nixos-unstable> { };
+in
+
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -21,19 +25,59 @@
     # Virtualization
     qemu
     docker
+    wineWowPackages.stable
+    winetricks
 
     # Utils
+    ## Core
     fd
-    atac
     vim
-    hyperfine
-    gping
-    tldr
     neofetch
+    broot
+    neovim
+    strace
+    htop
+    bat
+    xz
+
+    ## Web
+    unstable.atac
     websocketd
     websocat
-    broot
+    browsh
 
+    ## Network
+    gping
+    traceroute
+    tcpdump
+    bridge-utils
+    tunctl
+    iptables
+    iperf
+    netperf
+    fping
+    unstable.gns3-server
+    unstable.gns3-gui
+    ubridge
+    inetutils
+    nettools
+
+    ## FS
+    libguestfs
+
+    ## Dev tools
+    debootstrap
+    mtools
+    gdb
+
+    ## Others    
+    hyperfine
+    tldr
+    presenterm
+    hollywood
+    ffmpeg-full
+    imagemagick
+        
     # Programming languages
     rustup
     php82
@@ -43,24 +87,38 @@
     zig
     c3c
     gleam
-    typst
+    unstable.typst
 
-    # C
+    ## C
     gcc
     cmake
     ninja
     cosmopolitan
     cosmocc
+    clang-tools
+    musl
 
-    # PHP
+    ## PHP
     php82Packages.composer
 
-    # Python
+    ## Python
     uv
     python312Packages.meson
+    python312Packages.pip
+    python312Packages.pyyaml
+    python312Packages.pyqt5
+    python312Packages.matplotlib
+    python312Packages.pipx
+    python312Packages.setuptools
+    flent
+    poetry
     
-    # Javascript
+    ## Javascript
     bun
+    pnpm
+
+    ## Haskell
+    haskellPackages.stack
 
     # Terminal
     tmux
@@ -68,7 +126,11 @@
     # Libs
     nasm
     sqlite
-    pkg-config
+    samba
+    ncurses5
+    libselinux
+    SDL2
+    dfu-util
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -119,6 +181,7 @@
       nix-update = "nix-channel --update";
       nix-shell = "nix-shell --run $SHELL";
       nix-create-shell = "cp /home/julien/Programmation/nix/dotfiles/shell.nix .";
+      nix-clean = "nix-collect-garbage";
       home-build = "home-manager build";
       home-switch = "home-manager switch";
       home-update = "home-build && home-switch";
@@ -129,7 +192,7 @@
       fls = "ls -lhrtaX --group-directories-first";
     };
 
-    initExtra = ''
+    initContent = ''
       bindkey "^[[1;5C" forward-word
       bindkey "^[[1;5D" backward-word
       bindkey "^[[3~" delete-char
@@ -189,8 +252,10 @@
   };
 
   nix = {
-    package = pkgs.nix;
-    settings.experimental-features = [ "nix-command" "flakes" ];
+    package = pkgs.nixVersions.stable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
   };
 
   targets.genericLinux.enable = true;
