@@ -17,7 +17,7 @@ in
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "24.11"; # Please read the comment before changing.
+  home.stateVersion = "25.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -27,6 +27,7 @@ in
     docker
     wineWowPackages.stable
     winetricks
+    distrobox
 
     # Utils
     ## Core
@@ -39,6 +40,7 @@ in
     htop
     bat
     xz
+    lurk
 
     ## Web
     unstable.atac
@@ -61,6 +63,7 @@ in
     ubridge
     inetutils
     nettools
+    iputils
 
     ## FS
     libguestfs
@@ -69,6 +72,7 @@ in
     debootstrap
     mtools
     gdb
+    kitty
 
     ## Others    
     hyperfine
@@ -77,6 +81,7 @@ in
     hollywood
     ffmpeg-full
     imagemagick
+    plantuml
         
     # Programming languages
     rustup
@@ -118,7 +123,7 @@ in
     pnpm
 
     ## Haskell
-    haskellPackages.stack
+    unstable.haskellPackages.stack
 
     # Terminal
     tmux
@@ -190,6 +195,8 @@ in
       freespace = "sudo du -sh ./*";
       ls = "ls --color=auto";
       fls = "ls -lhrtaX --group-directories-first";
+
+      guest = "distrobox enter --root debian-guest --additional-flags '--env IN_DISTROBOX=true' && distrobox stop --root debian-guest";
     };
 
     initContent = ''
@@ -242,6 +249,19 @@ in
       scan_timeout = 10;
       command_timeout = 100;
 
+      username = {
+        detect_env_vars = [
+          "IN_DISTROBOX"
+        ];
+      };
+
+      hostname = {
+        ssh_only = false;
+        detect_env_vars = [
+          "IN_DISTROBOX"
+          "SSH_CONNECTION"
+        ];
+      };
       # character = {
       #   success_symbol = "[➜](bold green)";
       #   error_symbol = "[➜](bold red)";
