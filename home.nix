@@ -72,7 +72,6 @@ in
     debootstrap
     mtools
     gdb
-    kitty
 
     ## Others    
     hyperfine
@@ -127,6 +126,7 @@ in
 
     # Terminal
     tmux
+    kitty
 
     # Libs
     nasm
@@ -196,6 +196,7 @@ in
       ls = "ls --color=auto";
       fls = "ls -lhrtaX --group-directories-first";
 
+      # distrobox create --root -i debian:12 --name debian-guest --hostname debian-guest --nvidia
       guest = "distrobox enter --root debian-guest --additional-flags '--env IN_DISTROBOX=true' && distrobox stop --root debian-guest";
     };
 
