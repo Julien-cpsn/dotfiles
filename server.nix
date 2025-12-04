@@ -32,6 +32,7 @@ in
     bat
     xz
     gettext
+    unzip
    
     # Web
     atac
