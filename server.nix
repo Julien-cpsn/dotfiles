@@ -31,6 +31,7 @@ in
     htop
     bat
     xz
+    gettext
    
     # Web
     atac
