@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   unstable = import <nixos-unstable> { };
@@ -22,6 +22,7 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs; [
+    ed
     # Virtualization
     qemu
     docker
@@ -40,13 +41,19 @@ in
     htop
     bat
     xz
+
+    ## Trace & profiling
     lurk
+    linuxKernel.packages.linux_zen.perf
+    bpftrace
+    bpftools
 
     ## Web
     unstable.atac
     websocketd
     websocat
     browsh
+    #http-getter
 
     ## Network
     gping
@@ -55,23 +62,28 @@ in
     bridge-utils
     tunctl
     iptables
-    iperf
+    #iperf
+    iperf2
     netperf
     fping
-    unstable.gns3-server
-    unstable.gns3-gui
+    gns3-server
+    gns3-gui
     ubridge
     inetutils
     nettools
     iputils
+    netcat-openbsd
 
     ## FS
     libguestfs
-
+    
     ## Dev tools
     debootstrap
     mtools
     gdb
+    cloc
+    unstable.pandoc
+    difftastic
 
     ## Others    
     hyperfine
@@ -81,11 +93,15 @@ in
     ffmpeg-full
     imagemagick
     plantuml
-        
+    mermaid-cli    
+    d2
+    hollywood
+    fend
+
     # Programming languages
     rustup
     php82
-    python3
+    #python312
     nodejs_22
     jdk
     zig
@@ -93,9 +109,12 @@ in
     gleam
     unstable.typst
 
+    ## Rust
+    unstable.bpf-linker
+
     ## C
     gcc
-    cmake
+    unstable.cmake
     ninja
     cosmopolitan
     cosmocc
@@ -107,16 +126,25 @@ in
 
     ## Python
     uv
+    poetry
+    (python312.withPackages (p: with p; [
+      bcc
+      pandas
+      numpy
+      matplotlib
+      pygame
+      flask
+    ]))
+    /*
     python312Packages.meson
     python312Packages.pip
     python312Packages.pyyaml
-    python312Packages.pyqt5
     python312Packages.matplotlib
     python312Packages.pipx
     python312Packages.setuptools
+    python312Packages.bcc*/
     flent
-    poetry
-    
+       
     ## Javascript
     bun
     pnpm
@@ -132,10 +160,17 @@ in
     nasm
     sqlite
     samba
-    ncurses5
+    ncurses6
     libselinux
     SDL2
     dfu-util
+    linuxHeaders
+    dialog
+    freerdp
+    libnotify
+
+    # NIX
+    nix-prefetch-git
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -172,6 +207,10 @@ in
   home.sessionVariables = {
     # EDITOR = "emacs";
   };
+
+  home.sessionPath = [
+    "/home/julien/.cargo/bin"
+  ];
 
   #Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -235,6 +274,10 @@ in
       size = 10000;
       path = "${config.xdg.dataHome}/zsh/history";
     };
+
+    profileExtra = lib.optionalString (config.home.sessionPath != [ ]) ''
+      export PATH="$PATH''${PATH:+:}${lib.concatStringsSep ":" config.home.sessionPath}"
+    '';
   };
 
   programs.starship = {
@@ -274,9 +317,16 @@ in
 
   nix = {
     package = pkgs.nixVersions.stable;
+
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+
+    gc = {
+      automatic = true;
+      frequency = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   targets.genericLinux.enable = true;
