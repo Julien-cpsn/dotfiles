@@ -229,7 +229,7 @@ in
       home-build = "home-manager build";
       home-switch = "home-manager switch";
       home-update = "home-build && home-switch";
-      home-diff = "diff ~/.config/home-manager/home.nix ~/Programmation/nix/dotfiles/home.nix";
+      home-diff = "difft ~/.config/home-manager/home.nix ~/Programmation/nix/dotfiles/home.nix";
 
       freespace = "sudo du -sh ./*";
       ls = "ls --color=auto";

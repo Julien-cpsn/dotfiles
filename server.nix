@@ -46,6 +46,9 @@ in
     inetutils
     nettools
     iputils
+
+    ## Dev tools
+    difftastic
         
     # Programming languages
     rustup
@@ -131,7 +134,7 @@ in
       home-build = "home-manager build";
       home-switch = "home-manager switch";
       home-update = "home-build && home-switch";
-      #home-diff = "diff ~/.config/home-manager/home.nix ~/Programmation/nix/dotfiles/home.nix";
+      home-diff = "difft ~/.config/home-manager/home.nix ~/dotfiles/server.nix";
 
       freespace = "sudo du -sh ./*";
       ls = "ls --color=auto";
@@ -216,9 +219,16 @@ in
 
   nix = {
     package = pkgs.nixVersions.stable;
+
     extraOptions = ''
       experimental-features = nix-command flakes
     '';
+
+    gc = {
+      automatic = true;
+      frequency = "weekly";
+      options = "--delete-older-than 30d";
+    };
   };
 
   targets.genericLinux.enable = true;
