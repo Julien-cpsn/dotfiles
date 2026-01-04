@@ -48,6 +48,7 @@ in
     inetutils
     nettools
     iputils
+    unstable.witr
 
     ## Dev tools
     difftastic

@@ -73,6 +73,7 @@ in
     nettools
     iputils
     netcat-openbsd
+    unstable.witr
 
     ## FS
     libguestfs
