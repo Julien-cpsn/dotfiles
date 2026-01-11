@@ -25,7 +25,7 @@ in
     ed
     # Virtualization
     qemu
-    docker
+    unstable.docker
     wineWowPackages.stable
     winetricks
     distrobox
@@ -85,6 +85,8 @@ in
     cloc
     unstable.pandoc
     difftastic
+    gh
+    unstable.fresh-editor
 
     ## Others    
     hyperfine
@@ -169,6 +171,7 @@ in
     dialog
     freerdp
     libnotify
+    gnomeExtensions.appindicator
 
     # NIX
     nix-prefetch-git
