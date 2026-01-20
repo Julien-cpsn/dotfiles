@@ -52,7 +52,7 @@ in
 
     ## Dev tools
     difftastic
-    fresh-editor
+    unstable.fresh-editor
         
     # Programming languages
     rustup
