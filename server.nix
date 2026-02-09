@@ -53,6 +53,7 @@ in
     ## Dev tools
     difftastic
     unstable.fresh-editor
+    restic
         
     # Programming languages
     rustup
