@@ -54,7 +54,8 @@ in
     difftastic
     unstable.fresh-editor
     restic
-        
+    resticprofile    
+    
     # Programming languages
     rustup
     php82
