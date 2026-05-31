@@ -55,6 +55,9 @@ in
     unstable.fresh-editor
     restic
     resticprofile    
+
+    # Others
+    convmv
     
     # Programming languages
     rustup
